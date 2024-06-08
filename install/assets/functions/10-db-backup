@@ -789,8 +789,8 @@ backup_pgsql() {
     if var_true "${backup_job_split_db}" ; then
         for db in ${db_names} ; do
                 prepare_dbbackup
-                backup_job_filename=pgsql_${db}_${backup_job_db_host,,}_${now}.sql
-                backup_job_filename_base=pgsql_${db}_${backup_job_db_host,,}
+                backup_job_filename=pgsql_${db}_${backup_job_db_host,,}_${backup_job_db_port,,}_${now}.sql
+                backup_job_filename_base=pgsql_${db}_${backup_job_db_host,,}_${backup_job_db_port,,}
                 compression
                 pre_dbbackup "${db}"
                 write_log notice "Dumping PostgresSQL database: '${db}' ${compression_string}"
@@ -811,8 +811,8 @@ backup_pgsql() {
     else
         write_log debug "Not splitting database dumps into their own files"
         prepare_dbbackup
-        backup_job_filename=pgsql_all_${backup_job_db_host,,}_${now}.sql
-        backup_job_filename_base=pgsql_${db}_${backup_job_db_host,,}
+        backup_job_filename=pgsql_all_${backup_job_db_host,,}_${backup_job_db_port,,}_${now}.sql
+        backup_job_filename_base=pgsql_${db}_${backup_job_db_host,,}_${backup_job_db_port,,}
         compression
         pre_dbbackup all
         write_log notice "Dumping all PostgreSQL databases: '$(echo ${db_names} | xargs | tr ' ' ',')' ${compression_string}"
